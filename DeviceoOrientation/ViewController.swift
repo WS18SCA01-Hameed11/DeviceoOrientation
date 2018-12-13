@@ -9,12 +9,61 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var label: UILabel!
+    
+    
+    let names: [String] = [   //Pull down Hardware -> Orientation
+        "unknown",            //0
+        "portrait",           //1 home button at bottom
+        "portraitUpsideDown", //2 home button at top
+        "landscapeLeft",      //3 home button on right
+        "landscapeRight",     //4 home button on left
+        "faceUp",             //5 screen facing upwards
+        "faceDown",           //6 screen facing downwards
+    ];
+    
+    let colors: [UIColor] = [.red, .black, .gray, .green, .blue, .orange, .darkGray]
+    
+    var currentIndex: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
+
+    }
+    
+
+    
+    @objc func orientationDidChange() {
+        
+        currentIndex += 1
+        updateUI()
+
+    }
+    
+    func updateUI() {
+        //currentIndex %= colors.count;
+        
+        if currentIndex == colors.count {
+            currentIndex = 0
+        }
+        
+        label.text = names[UIDevice.current.orientation.rawValue]
+        view.backgroundColor = colors[currentIndex]
     }
 
-
 }
+
+
+
+
+
+
+
+
+
+
+
 
